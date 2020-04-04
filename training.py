@@ -30,7 +30,7 @@ def test():
 def reinforce(graph, num_partitions):
     policy = Policy(graph.adj_list, cuda=False)
 
-    optimizer = optim.Adam(policy.parameters(), lr=0.01)
+    optimizer = optim.Adam(policy.parameters(), lr=0.1)
     num_epochs = 50
     for epoch in range(num_epochs):
         optimizer.zero_grad()
