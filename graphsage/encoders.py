@@ -29,18 +29,18 @@ class Encoder(nn.Module):
                 torch.FloatTensor(embed_dim, self.feat_dim if self.gcn else 2 * self.feat_dim))
         init.xavier_uniform(self.weight)
 
-    def forward(self, nodes, features):
+    def forward(self, nodes, state):
         """
         Generates embeddings for a batch of nodes.
         nodes     -- list of nodes
         """
-        neigh_feats = self.aggregator.forward(nodes, features, [self.adj_lists[int(node)] for node in nodes],
+        neigh_feats = self.aggregator.forward(nodes, state, [self.adj_lists[int(node)] for node in nodes],
                 self.num_sample)
         if not self.gcn:
             if self.cuda:
-                self_feats = features(torch.LongTensor(nodes).cuda())
+                self_feats = state(nodes).cuda()
             else:
-                self_feats = features(torch.LongTensor(nodes))
+                self_feats = state(nodes)
             combined = torch.cat([self_feats, neigh_feats], dim=1)
         else:
             combined = neigh_feats
