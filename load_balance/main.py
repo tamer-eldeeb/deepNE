@@ -49,7 +49,8 @@ if __name__ == '__main__':
     edges = list(edges)
     graph = create_workload(edges)
 
-    power_of_k.run(graph, args.num_partitions, args.seed)
+    if args.method == 'power_of_k':
+        power_of_k.run(graph, args.num_partitions, args.seed)
 
 
 
